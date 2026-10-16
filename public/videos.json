@@ -15,6 +15,14 @@
       "poster": "videos/test-pattern.jpg",
       "duration": 10,
       "description": "A second sample, so the list and Up next have more than one clip."
+    },
+    {
+      "id": "tailsdoll",
+      "title": "Tails Doll",
+      "file": "videos/tailsdoll.mp4",
+      "poster": "videos/tailsdoll.jpg",
+      "duration": 69,
+      "description": "A completion of the Geometry Dash level Tails Doll. The clip flashes rapidly."
     }
   ]
 }
