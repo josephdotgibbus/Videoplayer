@@ -105,7 +105,12 @@ export function mediaUrl(file: string): string {
 }
 
 export async function loadCatalog(): Promise<ShelfVideo[]> {
-  const response = await fetch(`${import.meta.env.BASE_URL}videos.json`)
+  // Pages keeps videos.json for about 10 minutes. A new query skips that
+  // cache, so a normal reload shows a catalog that was just deployed.
+  const response = await fetch(
+    `${import.meta.env.BASE_URL}videos.json?${Date.now()}`,
+    { cache: "no-store" }
+  )
 
   if (!response.ok) {
     throw new Error(`Could not load videos.json (${response.status}).`)
