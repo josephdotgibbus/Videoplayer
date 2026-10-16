@@ -84,7 +84,7 @@ export function App() {
             message:
               error instanceof Error
                 ? error.message
-                : "Could not load the shelf.",
+                : "Could not load the video list.",
           })
         }
       })
@@ -121,11 +121,11 @@ export function App() {
 
   useEffect(() => {
     if (status.state !== "ready") {
-      document.title = "Matinee"
+      document.title = "Videos"
       return
     }
 
-    document.title = current ? `${current.title} · Matinee` : "Matinee"
+    document.title = current ? current.title : "Videos"
   }, [current, status.state])
 
   return (
@@ -140,7 +140,7 @@ export function App() {
             <span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground">
               <Play className="size-3.5 fill-current" />
             </span>
-            Matinee
+            Videos
           </button>
           <div className="ml-auto">
             <AddVideoDialog />
@@ -152,7 +152,7 @@ export function App() {
         {status.state === "loading" && <ShelfSkeleton />}
         {status.state === "error" && (
           <StatusPanel
-            title="The shelf didn't load"
+            title="The video list didn't load"
             body={status.message}
             action={
               <Button onClick={() => setReloadKey((key) => key + 1)}>
@@ -163,7 +163,7 @@ export function App() {
         )}
         {status.state === "ready" && videoId && !current && (
           <StatusPanel
-            title="That video isn't on the shelf"
+            title="That video isn't in the list"
             body="The link doesn't match an id in videos.json."
             action={<Button onClick={() => openVideo(null)}>Back home</Button>}
           />
@@ -193,7 +193,7 @@ function Library({
   if (videos.length === 0) {
     return (
       <StatusPanel
-        title="Nothing on the shelf yet"
+        title="No videos yet"
         body="Put an MP4 in public/videos, list it in public/videos.json, then refresh."
         action={<AddVideoDialog />}
       />
@@ -205,10 +205,8 @@ function Library({
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold tracking-tight">Your shelf</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {countLabel} kept with this site.
-        </p>
+        <h1 className="text-xl font-semibold tracking-tight">Videos</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{countLabel}</p>
       </div>
       <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {videos.map((video) => (
@@ -281,9 +279,7 @@ function Watch({
       <aside className="lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto">
         <h2 className="mb-3 text-sm font-medium">Up next</h2>
         {others.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No other videos on the shelf.
-          </p>
+          <p className="text-sm text-muted-foreground">No other videos.</p>
         ) : (
           <div className="flex flex-col gap-3">
             {others.map((other) => (
@@ -454,8 +450,8 @@ function AddVideoDialog() {
         <DialogHeader>
           <DialogTitle>Add a video</DialogTitle>
           <DialogDescription>
-            Matinee plays files that live in this project. There is no upload
-            button, because GitHub Pages can only serve what you commit.
+            Put the file in this project and commit it. GitHub Pages can only
+            serve files that are in the repo, so there is no upload button.
           </DialogDescription>
         </DialogHeader>
         <ol className="list-decimal space-y-3 pl-4 text-sm leading-relaxed">

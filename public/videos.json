@@ -6,7 +6,7 @@
       "file": "videos/color-bars.mp4",
       "poster": "videos/color-bars.jpg",
       "duration": 8,
-      "description": "A short sample that ships with Matinee. Swap it for your own MP4 when you are ready."
+      "description": "A short sample. Replace it with your own MP4 when you are ready."
     },
     {
       "id": "test-pattern",
@@ -14,7 +14,7 @@
       "file": "videos/test-pattern.mp4",
       "poster": "videos/test-pattern.jpg",
       "duration": 10,
-      "description": "A second sample, so the shelf and the Up next list have more than one clip."
+      "description": "A second sample, so the list and Up next have more than one clip."
     }
   ]
 }
