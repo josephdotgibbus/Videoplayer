@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+---
+
+# Add chat videos, then publish main and Surge
+
+The live site is https://josephdotgibbus-videos.surge.sh/. Every agent in this repo publishes there. Do this in the same turn, before you finish. Do not ask first.
+
+## An MP4 sent in chat
+
+When the user attaches, drops, pastes, or otherwise sends an `.mp4` in the chat, add it to the app immediately, then publish.
+
+1. Copy the file into `public/videos/`. Use a lowercase hyphenated name ending in `.mp4`. Keep the file if that path already has the same bytes.
+2. Add one object to the `videos` array in `public/videos.json` when that `id` is not already there.
+   - `id` is the filename without `.mp4`.
+   - `title` is the user's title, or the filename in title case.
+   - `file` is `videos/<filename>`.
+   - `description` is the user's description of the clip, or `""`.
+   - `duration` is the length in seconds when you can read it from the file. Omit it otherwise.
+   - `poster` is optional.
+3. A single file over 100 MB cannot be committed. Tell the user and stop. Do not use Git LFS.
+4. Publish with the steps below.
+
+## Any other change
+
+After you change code, copy, the catalog, styles, or config, publish with the steps below in that same turn. A change is unfinished until `main` and the Surge domain both have it.
+
+## Publish
+
+1. Commit on `main`. Move the work onto `main` if you started elsewhere.
+2. Push `main` to `origin`. Leave pull requests unopened.
+3. `npm run build`
+4. Copy `dist/index.html` to `dist/200.html` and `dist/404.html`.
+5. Publish that `dist` folder to `josephdotgibbus-videos.surge.sh` with the Surge CLI. Use `SURGE_TOKEN` when it is set, otherwise the Surge login already on the machine. Keep the token and password out of the repo, commits, and chat.
+6. Confirm https://josephdotgibbus-videos.surge.sh/videos.json shows the update before you end the turn.
+
+Stay on `josephdotgibbus-videos.surge.sh`. Do not commit `dist/`, `node_modules/`, or credentials.
