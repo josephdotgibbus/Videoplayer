@@ -40,7 +40,7 @@ Open the URL Vite prints. Drop a file in `public/videos/`, edit `public/videos.j
 }
 ```
 
-`id` is the watch link (`?v=dock-at-dusk`). `file` is a path under `public/`, and it has to be an `.mp4`. Optional fields:
+`id` is the watch link (`/dock-at-dusk`). An older `?v=dock-at-dusk` link still opens the same clip. `file` is a path under `public/`, and it has to be an `.mp4`. Optional fields:
 
 - `description` — text under the player
 - `poster` — thumbnail image, also under `public/`

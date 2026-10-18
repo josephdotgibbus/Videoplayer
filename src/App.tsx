@@ -31,24 +31,70 @@ const catalogExample = `{
   "description": "A quiet pan across the harbor."
 }`
 
+function sitePrefix(): string {
+  const base = import.meta.env.BASE_URL
+  if (!base.startsWith("/")) {
+    return "/"
+  }
+
+  return base.endsWith("/") ? base : `${base}/`
+}
+
 function readVideoId() {
+  const pathId = videoIdFromPath(window.location.pathname)
+  if (pathId) {
+    return pathId
+  }
+
   return new URLSearchParams(window.location.search).get("v")
 }
 
-function writeVideoId(id: string | null) {
-  const url = new URL(window.location.href)
+function videoIdFromPath(pathname: string): string | null {
+  const prefix = sitePrefix()
+  let rest: string
 
-  if (id) {
-    url.searchParams.set("v", id)
+  if (prefix === "/") {
+    rest = pathname.replace(/^\/+/, "")
   } else {
-    url.searchParams.delete("v")
+    const root = prefix.slice(0, -1)
+    if (pathname === root || pathname === prefix) {
+      return null
+    }
+    if (!pathname.startsWith(prefix)) {
+      return null
+    }
+    rest = pathname.slice(prefix.length)
   }
+
+  rest = rest.replace(/\/+$/, "")
+  if (!rest || rest === "index.html" || rest.includes("/")) {
+    return null
+  }
+
+  try {
+    return decodeURIComponent(rest)
+  } catch {
+    return null
+  }
+}
+
+function writeVideoId(id: string | null, mode: "push" | "replace" = "push") {
+  const url = new URL(window.location.href)
+  const prefix = sitePrefix()
+
+  url.searchParams.delete("v")
+  url.hash = ""
+  url.pathname = id ? `${prefix}${encodeURIComponent(id)}` : prefix
 
   const next = `${url.pathname}${url.search}${url.hash}`
   const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
 
   if (next !== current) {
-    window.history.pushState(null, "", next)
+    window.history[mode === "replace" ? "replaceState" : "pushState"](
+      null,
+      "",
+      next
+    )
   }
 }
 
@@ -65,6 +111,16 @@ export function App() {
     window.addEventListener("popstate", onPopState)
     return () => {
       window.removeEventListener("popstate", onPopState)
+    }
+  }, [])
+
+  useEffect(() => {
+    const id = readVideoId()
+    const hasQuery = new URLSearchParams(window.location.search).has("v")
+    const trailingSlash = id != null && window.location.pathname.endsWith("/")
+
+    if (hasQuery || trailingSlash) {
+      writeVideoId(id, "replace")
     }
   }, [])
 
