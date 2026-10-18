@@ -15,14 +15,18 @@ function siteBase(): string {
   return `/${repo}/`
 }
 
-function githubPagesFallback(): Plugin {
+function spaFallback(): Plugin {
   return {
-    name: "github-pages-fallback",
+    name: "spa-fallback",
     closeBundle() {
       const index = resolve(import.meta.dirname, "dist/index.html")
-      if (existsSync(index)) {
-        copyFileSync(index, resolve(import.meta.dirname, "dist/404.html"))
+      if (!existsSync(index)) {
+        return
       }
+
+      // GitHub Pages serves 404.html for unknown paths. Surge serves 200.html.
+      copyFileSync(index, resolve(import.meta.dirname, "dist/404.html"))
+      copyFileSync(index, resolve(import.meta.dirname, "dist/200.html"))
     },
   }
 }
@@ -30,7 +34,7 @@ function githubPagesFallback(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   base: siteBase(),
-  plugins: [react(), tailwindcss(), githubPagesFallback()],
+  plugins: [react(), tailwindcss(), spaFallback()],
   resolve: {
     alias: {
       "@": resolve(import.meta.dirname, "./src"),

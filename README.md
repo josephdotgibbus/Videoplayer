@@ -2,6 +2,8 @@
 
 A page for watching MP4 files you commit to this repo.
 
+The live site is [josephdotgibbus-videos.surge.sh](https://josephdotgibbus-videos.surge.sh). A video link is a path, such as [https://josephdotgibbus-videos.surge.sh/tailsdoll](https://josephdotgibbus-videos.surge.sh/tailsdoll).
+
 ## Push to GitHub Pages
 
 This project is not on GitHub yet. Create the repository with the Create repo pill, then:
